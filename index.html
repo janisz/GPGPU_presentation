@@ -51,7 +51,7 @@
 
 				<section id="introduction">
 					<section>
-						<h2>Why we should bother GPU?</h2>
+						<h2>Why should I bother GPU?</h2>
 					</section>
 					<section>
 						<h2>Moore is no more</h2>
@@ -74,17 +74,23 @@
 							<li class="fragment roll-in">Graphics</li>
 							<li class="fragment roll-in">Simulations</li>
 							<li class="fragment roll-in">AI</li>
-							<li class="fragment roll-in">Data Analyses</li>
+							<li class="fragment roll-in">Data Analysis</li>
 						</ul>
 					</section>
 				</section>
 
 				<section id="code">
 						<section>
-							<h2>Talk is cheep show me the code</h2>
-							<p class="fragment roll-in">
+							<h2><q cite="http://pl.wikiquote.org/wiki/Linus_Torvalds">
+								&ldquo;Talk is cheep show me the code&rdquo;</q></h2>
+							<p style="font-size: 15px;">Linus Torvalds</p>
+
+						</section>
+						<section>
+							<p>
 								Add the corresponding locations of
-								'A' and 'B', and store the result in 'C'.</p>
+								<code>A</code> and <code>B</code>, and store the result in <code>C</code>.
+							</p>
 						</section>
 						<section data-state="customevent">
 							<h3>Plain Old C</h3>
@@ -107,7 +113,7 @@
 							    {
 							        #pragma omp for schedule(dynamic,chunk) nowait
 							        for (int i = 0; i < L; i++) {
-							        C[i] = A[i] + B[i];
+							            C[i] = A[i] + B[i];
 							        }
 							    }
 							}
@@ -133,7 +139,7 @@
 								void vecadd( int *A , int *B , int *C)
 								{
 								    int id = blockIdx.x*blockDim.x+threadIdx.x;
-								    C [id] = A[id] + B[id] ;
+								    C[id] = A[id] + B[id] ;
 								}
 							</code></pre>
 						</section>
@@ -171,9 +177,28 @@
 					</section>
 				</section>
 
+				<section id="Rules-Of-Thumb">
+					<section>
+						<h1>Rules Of Thumb</h1>
+					</section>
+					<section>
+						<h2>RTFM</h2>
+						<blockquote cite="http://xkcd.com/293/">
+							&ldquo;Life is too short for man pages, and occasionally much too short without them.&rdquo;
+						</blockquote>
+						<p style="font-size: 15px;">Randall Munroe (xkcd.com)</p>
+					</section>
+					<section>
+						<h2>Think parallel</h2>
+					</section>
+					<section>
+						<h2>SIMD</h2>
+					</section>
+				</section>
+
 				<section id="Problems">
 					<section>
-						<h2>Problems</h2>
+						<h1>Problems</h1>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>Development is hard</p>
@@ -187,21 +212,23 @@
 					</section>
 					<section>
 						<p><strong>Problem: </strong>Copying data to/from GPU is slow</p>
-						<p class="fragment roll-in"><strong>Solution: </strong>Use stream and compute while data are loaded</p>
+						<p class="fragment roll-in"><strong>Solution: </strong>
+							Use stream and compute while data are loaded
+						</p>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>GPU doesn't like 64bit computation</p>
 						<p class="fragment roll-in"><strong>Solution: </strong>Wait for next release</p>
 					</section>
 					<section>
-						<p><strong>Problem: </strong>I need better performance but I won't to code a lot</p>
+						<p><strong>Problem: </strong>I dont want to code a lot</p>
 						<p class="fragment roll-in"><strong>Solution: </strong>Use libs</p>
-						<ul class="fragment roll-in">
-							<li>ArrayFire</li>
-							<li>Thrust (STL for CUDA)</li>
-							<li>cuBLAS (Basic Linear Algebra Subprograms)</li>
-							<li>nvBLAS (multi GPU system)</li>
-							<li>cuFFT</li>
+						<ul>
+							<li class="fragment fade-in">ArrayFire</li>
+							<li class="fragment fade-in">Thrust (STL for CUDA)</li>
+							<li class="fragment fade-in">cuBLAS (Basic Linear Algebra Subprograms)</li>
+							<li class="fragment fade-in">cuFFT</li>
+							<li class="fragment fade-in">cuDNN (GPU-accelerated library of primitives for deep neural networks)</li>
 						</ul>
 					</section>
 				</section>
@@ -211,7 +238,7 @@
 						<p>Before you code your custom solution.</p>
 					</section>
 					<section data-state="customevent">
-						<h3>PGStorm</h3>
+						<h2>PGStorm</h2>
 						<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
 							postgres=# SELECT COUNT(*) FROM t1 WHERE sqrt((x-25.6)^2 + (y-12.8)^2) < 15;
 							count
