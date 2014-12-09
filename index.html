@@ -60,9 +60,6 @@
 						<h2>Real parallel computation</h2>
 					</section>
 					<section>
-						<h2>Core price</h2>
-					</section>
-					<section>
 						<h2>Available for normal people</h2>
 					</section>
 				</section>
@@ -116,6 +113,21 @@
 							            C[i] = A[i] + B[i];
 							        }
 							    }
+							}
+							</code></pre>
+						</section>
+						<section data-state="customevent">
+							<h3>GLSL</h3>
+							<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
+							#version 110
+
+							uniform sampler2D texture1;
+							uniform sampler2D texture2;
+
+							void main() {
+							    vec4 A = texture2D(texture1, gl_TexCoord[0].st);
+							    vec4 B = texture2D(texture2, gl_TexCoord[0].st);
+							    gl_FragColor = A + B;
 							}
 							</code></pre>
 						</section>
@@ -260,27 +272,6 @@
 						<p><code>t1</code> and <code>t2</code> contain same contents with 10 millions of records,
 							but <code>t1</code> is a regular table and <code>t2</code> is a foreign table managed by PG-Strom
 						</p>
-					</section>
-					<section>
-						<h2>Map Reduce frameworks</h2>
-						<ul>
-							<li>Grex</li>
-							<li>Panda</li>
-							<li>C-MR</li>
-							<li>GPMR</li>
-							<li>Shredder</li>
-							<li>SteamMR</li>
-						</ul>
-					</section>
-
-					<section>
-						<blockquote cite="http://www.networkworld.com/article/2167576/tech-primers/hadoop---gpu--boost-performance-of-your-big-data-project-by-50x-200x-.html">
-							&ldquo;
-							GPU can speed up computations by nearly five to 25 times per node.
-							Some developers claim that if your cluster consists of several nodes,
-							performance can be accelerated by 50x-200x. For example,
-							the creators of the MITHRA project achieved a 254x increase.&rdquo;
-						</blockquote>
 					</section>
 				</section>
 
