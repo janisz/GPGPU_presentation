@@ -47,20 +47,41 @@
 					<p>
 						<small><a href="http://janisz.github.io">Tomek Janiszewski</a> / <a href="http://twitter.com/janiszt">@janiszt</a></small>
 					</p>
+					<aside class="notes">
+						1. Who has ever play with GPU? Some custom shader, openCL, CUDA ...?
+
+						My Experience. I'm part of a team which is building in memory time series database like OpenTSDB but stored on GPUs.
+
+						This talk will be really short introduction to GPGPU just to show it exist.
+					</aside>
 				</section>
 
 				<section id="introduction">
 					<section>
 						<h2>Why should I bother GPU?</h2>
+						<aside class="notes">
+							2. Ok. Why we should consider moving our computations from "normal" CPUs to GPUs?
+						</aside>
 					</section>
 					<section>
 						<h2>Moore is no more</h2>
+						<aside class="notes">
+							Moor says that "the number of transistors in a dense integrated circuit doubles approximately every two years"
+							Now we reach the limit and can't put more transistors in one chip.
+							Instead of this we put more core in one processor. But what if we has thousands of not so powerful cores instated of dozen mighty ones?
+						</aside>
 					</section>
 					<section>
 						<h2>Real parallel computation</h2>
+						<aside class="notes">
+							With data analysis we need to compute thousand of data in similar meaner which is opposite to traditional Multi Instruction Single Data and now we can do it with thousent of cores
+						</aside>
 					</section>
 					<section>
 						<h2>Available for normal people</h2>
+						<aside class="notes">
+							Modern GPUs are available for average men. They costs less than 50$. Of course there are high-end cards that costs thousands and doesn't have video interface.
+						</aside>
 					</section>
 				</section>
 
@@ -73,6 +94,16 @@
 							<li class="fragment roll-in">AI</li>
 							<li class="fragment roll-in">Data Analysis</li>
 						</ul>
+						<aside class="notes">
+							3. Where we can gain performance by using GPU?
+							Of course graphics. Graphics card are made for compute graphics transformation so that's not surprise. But maybe you don't know modern browsers accelerate page rendering using GPUs.
+
+							Have you ever heard about Havoc of PhysiX? They are physics engines that make use of GPUs to provide better simulations. But that's not only application of GPU in simulations. We use GPUs for simulation of protein structures.
+
+							Artificial Intelligence. This is kind of new application of GPU. 3 months ago NVidia released cuDNN - deep neural network accelerator.
+
+							Data Analysis. I think this is biggest group in fact we can put applications I mentioned before in this group - for example image edge detection is data analysis. Mostly bioinformatics with text algorithms to analyse DNA but there are more and more data analysis accelerator for Matlab or R and database that use GPU but they are only in for academic research.
+						</aside>
 					</section>
 				</section>
 
@@ -81,7 +112,9 @@
 							<h2><q cite="http://pl.wikiquote.org/wiki/Linus_Torvalds">
 								&ldquo;Talk is cheep show me the code&rdquo;</q></h2>
 							<p style="font-size: 15px;">Linus Torvalds</p>
-
+							<aside class="notes">
+								4. Time for basic example. We will sum 2 vectors. Here is formal definition.
+							</aside>
 						</section>
 						<section>
 							<p>
@@ -99,6 +132,9 @@
 							    }
 							}
 						</code></pre>
+							<aside class="notes">
+								I hope everybody understand this code. And probably some of you write it in little changed form at your daily work. How we can make it faster? By using all of our cores.
+							</aside>
 						</section>
 						<section data-state="customevent">
 							<h3>OpenMP</h3>
@@ -115,6 +151,9 @@
 							    }
 							}
 							</code></pre>
+							<aside class="notes">
+								I think as long as we want to stay in C and keep code readable OpenMP fits perfectly
+							</aside>
 						</section>
 						<section data-state="customevent">
 							<h3>GLSL</h3>
@@ -130,6 +169,9 @@
 							    gl_FragColor = A + B;
 							}
 							</code></pre>
+							<aside class="notes">
+								In 2001 we get first cards with Shader support. Our task is similar to blending two textures.
+							</aside>
 						</section>
 						<section data-state="customevent">
 							<h3>OpenCL</h3>
@@ -143,6 +185,10 @@
 								    C[id] = A[id] + B[id];
 								}
 							</code></pre>
+							<aside class="notes">
+								Next step in moving Computation to GPU was or is OpenCL. It was designed as one standard to rule all platforms. It was created by Apple but now it's lead by Khronos Group with support from companies.
+								What's going on here? We get something like thread id but in GPU world and add corresponding values.
+							</aside>
 						</section>
 						<section data-state="customevent">
 							<h3>CUDA</h3>
@@ -154,6 +200,9 @@
 								    C[id] = A[id] + B[id] ;
 								}
 							</code></pre>
+							<aside class="notes">
+								2007 NVidia presents CUDA. In concepts it's similar to OpenCL but works only with NVidia cards but in return we get IDE based on Eclipse with debugger and profiler.
+							</aside>
 						</section>
 
 					<section>
@@ -164,6 +213,9 @@
 							<li class="fragment roll-in">Check for errors</li>
 							<li class="fragment roll-in">Copy output back to RAM</li>
 						</ol>
+						<aside class="notes">
+							But wait. I show you code that is responsible for computation. we need put data on GPU somehow, launch our function and get results back.
+						</aside>
 					</section>
 
 					<section>
@@ -171,27 +223,47 @@
 						<img src="img/vector_addition.png">
 						<p style="font-size: 15px;"><q cite="http://hpclab.blogspot.com/2011/09/is-gpu-good-for-large-vector-addition.html">
 							http://hpclab.blogspot.com/2011/09/is-gpu-good-for-large-vector-addition.html</q></p>
+						<aside class="notes">
+							And the results are... miserable. Comparison is from 2011 but trends are still actual. CPU is much faster. Lets take another try and instead of adding vectors try to multiple matrices.
+						</aside>
 					</section>
 					<section>
 						<h3>but for harder problems</h3>
 						<img src="img/matrix_multiplication.png">
 						<p style="font-size: 15px;"><q cite="http://hpclab.blogspot.com/2011/09/is-gpu-good-for-large-vector-addition.html">
 							 http://hpclab.blogspot.com/2011/09/is-gpu-good-for-large-vector-addition.html</q></p>
+						<aside class="notes">
+							This is nice. GPU overtake CPU but why it wasn't working with vectors?
+						</aside>
 					</section>
 				</section>
 
 				<section>
 					<section>
 						<h2>How it works inside?</h2>
+						<aside class="notes">
+							5. To understand it we must go deeper under the C and touch raw metal.
+						</aside>
 					</section>
 					<section>
 						<img src="img/cuda-mem.png">
+						<aside class="notes">
+							This is concept diagram of GPU.
+							Our main bottle neck is PCIe where we are limited to 16 GB/s which is comparable with DDR3. And that's why vector addition is slower than on regular CPU data transfer overwhelm computation. In matrix multiplication we didn't see it because computation takes much longer than copying of data. Next we have 2 types of read only constant memory where constants and kernel arguments are stored and texture memory optimised for 2D access. Global memory is read and write and requires sequential and aligned (16 byte) reads and writes to be fast.
+
+							Other types of memory are faster. Shared memory is shared across threads in one block. Local memory and registers are privet for thread.
+
+							Thread are packed in block which are packed in grids but I'll not talk about it.
+						</aside>
 					</section>
 				</section>
 
 				<section id="Rules-Of-Thumb">
 					<section>
 						<h1>Rules Of Thumb</h1>
+						<aside class="notes">
+							6. Some best practices.
+						</aside>
 					</section>
 					<section>
 						<h2>RTFM</h2>
@@ -199,38 +271,62 @@
 							&ldquo;Life is too short for man pages, and occasionally much too short without them.&rdquo;
 						</blockquote>
 						<p style="font-size: 15px;">Randall Munroe (xkcd.com)</p>
+						<aside class="notes">
+							Documentation is really friendly and is best way to avoid errors and allow to get maximum performance from hardware. So I strongly recommend read it.
+						</aside>
 					</section>
 					<section>
 						<h2>Think parallel</h2>
+						<aside class="notes">
+							Vector adding is "Hello World" example and GPGPU is more than run loop over thousand threads. We need to change our algorithms, structures and probably data to work on full speed.
+						</aside>
 					</section>
 					<section>
 						<h2>SIMD</h2>
+						<aside class="notes">
+							Branches, synchronisation often kills performance. Sometimes it faster to replace it with sinus and multiplication.
+						</aside>
 					</section>
 				</section>
 
 				<section id="Problems">
 					<section>
 						<h1>Problems</h1>
+						<aside class="notes">
+							7. You saw that GPU desn't solve all your problems but when you use it it will generate some.
+						</aside>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>Development is hard</p>
 						<p class="fragment roll-in"><strong>Solution: </strong>Always have spare GPU in your computer</p>
+						<aside class="notes">
+							What do you think, when your program start infinite loop on GPU, what will you see? It will eat all resources and display will hang. So good practice is to have another GPU for development. If you have laptops you already has 2 cards not cheep ones like this.
+						</aside>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>Debugging is impossible</p>
 						<p class="fragment roll-in"><strong>Solution: </strong>Write tests
 						<span class="fragment roll-in"> and run them!</span>
 						</p>
+						<aside class="notes">
+							We are working near hardware so every bit matters and could change performance so test often. And debugging 10k threads is hard
+						</aside>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>Copying data to/from GPU is slow</p>
 						<p class="fragment roll-in"><strong>Solution: </strong>
 							Use stream and compute while data are loaded
 						</p>
+						<aside class="notes">
+							We can load data while our card is busy working on data we loaded before.
+						</aside>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>GPU doesn't like 64bit computation</p>
 						<p class="fragment roll-in"><strong>Solution: </strong>Wait for next release</p>
+						<aside class="notes">
+							Right now we can't do much with it.
+						</aside>
 					</section>
 					<section>
 						<p><strong>Problem: </strong>I dont want to code a lot</p>
@@ -242,12 +338,18 @@
 							<li class="fragment fade-in">cuFFT</li>
 							<li class="fragment fade-in">cuDNN (GPU-accelerated library of primitives for deep neural networks)</li>
 						</ul>
+						<aside class="notes">
+							ArrayFire is commercial product which was open-sourced month ago. And it's integrate cuBLAS, cuFFT and some other statistical function in multiple backend lib (CUDA, OpenCL, CPU). Other libs are only for CUDA.
+						</aside>
 					</section>
 				</section>
 
 				<section>
 					<section>
 						<p>Before you code your custom solution.</p>
+						<aside class="notes">
+							8. Let's see some data related example
+						</aside>
 					</section>
 					<section data-state="customevent">
 						<h2>PGStorm</h2>
@@ -272,11 +374,20 @@
 						<p><code>t1</code> and <code>t2</code> contain same contents with 10 millions of records,
 							but <code>t1</code> is a regular table and <code>t2</code> is a foreign table managed by PG-Strom
 						</p>
+						<aside class="notes">
+							PGStorm is foreign data wrapper for Postgre
+							This is example from their documentation and you must admint that result are spectacular.
+
+							There are some Map-Reduce frameworks to accelerate Hadoop. Some researches clam that they jobs runs 200 times faster but I not sure if they tested it in production or in home.
+						</aside>
 					</section>
 				</section>
 
 				<section id="questions">
 					<h1>Questions?</h1>
+					<aside class="notes">
+						That's all thank you for listening
+					</aside>
 				</section>
 
 			</div>
